@@ -1,4 +1,4 @@
-﻿# big-star-collectible
+﻿# Big star collectible
 
  **Note:** I followed the Linked Learning Course. Further exercise files are uploaded to this repository.
 
