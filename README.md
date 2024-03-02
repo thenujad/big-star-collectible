@@ -7,8 +7,7 @@
 ## License Agreement
 
 ```plaintext
-This License Agreement (the "Agreement") is a binding legal agreement
-...
+
 LinkedIn Learning Exercise Files License Agreement
 ==================================================
 
@@ -116,5 +115,5 @@ agreements relating to the Licensed Materials.
 License Url: https://github.com/LinkedInLearning/spring-web-mvc-6-4374132/blob/main/LICENSE
 
 Last Updated: March 2019
-...
+
 
