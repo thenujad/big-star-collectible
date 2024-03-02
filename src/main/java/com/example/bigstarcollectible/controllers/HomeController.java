@@ -1,12 +1,13 @@
 package com.example.bigstarcollectible.controllers;
 
-import jakarta.persistence.Entity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 
-@Entity
+@Controller
 public class HomeController {
 
-    public String displayHome()
+    public String displayHome(Model model)
     {
-
+       return "index";
     }
 }
