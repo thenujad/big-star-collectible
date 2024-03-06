@@ -2,8 +2,7 @@ package com.example.bigstarcollectible.restcontrollers;
 
 import com.example.bigstarcollectible.beans.Product;
 import com.example.bigstarcollectible.dao.ProductRepository;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,5 +19,28 @@ public class ProductRestController {
     public List<Product> allProducts(){
         List<Product> products = new ArrayList<>();
         return (List<Product>) productRepository.findAll();
+
+    }
+
+    @GetMapping("/bigstar/api/products/{id}")
+    public Product getProductById(@PathVariable("id") String id){
+
+        return productRepository.findById(Integer,valueOf(id)).orElseThrow(()-> new ProductNotFoundException(id));
+    }
+
+    @PostMapping("/bigstar/api/products")
+    public Product saveProduct(@RequestBody Product newProduct) {
+        return productRepository.findById(newProduct.getId()).map(product -> {
+            product.setName(newProduct.getName());
+            product.setDescription(newProduct.getDescription());
+            product.setColor(newProduct.getColor());
+            product.setCategoryId(newProduct.getCategoryId());
+            product.setRobotId(newProduct.getRobotId());
+            product.setImagePath(newProduct.getImagePath());
+            product.setRating(newProduct.getRating());
+            product.setNoOfReviews(newProduct.getNoOfReviews());
+            product.setPrice(newProduct.getPrice());
+            return productRepository.save(product);
+        }).orElseGet(()-> productRepository.save(newProduct));
     }
 }

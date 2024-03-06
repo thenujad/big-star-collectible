@@ -1,20 +1,19 @@
 package com.example.bigstarcollectible.controllers;
 
+import com.example.bigstarcollectible.beans.Filter;
 import com.example.bigstarcollectible.beans.Product;
 import com.example.bigstarcollectible.dao.ProductRepository;
 
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Repository;
+
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.async.DeferredResult;
 import org.slf4j.Logger;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executor;
@@ -48,10 +47,35 @@ public class ProductController {
         DeferredResult<String> deferredResult = new DeferredResult<>();
         asyncExecutor.execute(()->{
         model.addAttribute("products", getProducts());
+        model.addAttribute("filter", new Filter());
         deferredResult.setResult("product-list");
     });
      return deferredResult;
     }
+
+    @PostMapping("/filterProducts")
+    public String filterProductsBasedOnProductType(@ModelAttribute("filter") Filter filter, Model model) {
+
+        List<Product> filteredProducts = new ArrayList<>();
+        List<String> selectedTypes = filter.getSelectedType();
+        for (String token : selectedTypes) {
+            if (token.equals("ALL")) {
+                productRepository.findAll().forEach(product -> {
+                    filteredProducts.add(product);
+                });
+                break;
+            }
+            else{
+                int categoryId = ProductCategory.valueOf(token).getId();
+                filteredProducts.addAll(productRepository.searchByCategoryId(categoryId));
+            }
+        }
+        model.addAttribute("products", filteredProducts);
+        model.addAttribute("filter", filter);
+
+        return "product-list";
+    }
+
 
     private Iterable<Product> getProducts(){
 
