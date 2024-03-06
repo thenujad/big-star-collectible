@@ -2,6 +2,7 @@ package com.example.bigstarcollectible.controllers;
 
 
 import com.example.bigstarcollectible.beans.User;
+import com.example.bigstarcollectible.dao.UserRepository;
 import com.example.bigstarcollectible.validators.UserValidator;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,8 +18,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class UserController {
     private UserValidator userValidator;
 
-    public UserController(UserValidator userValidator) {
+    private UserRepository userRepository;
+
+    public UserController(UserValidator userValidator, UserRepository userRepository) {
+
         this.userValidator = userValidator;
+        this.userRepository = userRepository;
     }
 
     @InitBinder
@@ -36,7 +41,16 @@ public class UserController {
     @PostMapping("/saveUser")
     public String saveUser(@ModelAttribute("user")User user, BindingResult result, Model model){
         //validate & save to DB
-        return "register-user";
-    }
 
+        if(result.hasErrors()){
+        return "register-user";
+        }
+
+        User saveUser = userRepository.save(user);
+        if(saveUser != null){
+            model.addAttribute("userSaved", true );
+        }
+        return "register-user";
+
+   }
 }

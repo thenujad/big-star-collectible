@@ -19,4 +19,9 @@ public class HomeController {
     {
         return "/characters/"+charName;
     }
+
+    @GetMapping("/about")
+    public String displayAbout(){
+        return "about";
+    }
 }

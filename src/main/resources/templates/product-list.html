@@ -44,7 +44,7 @@
 		<section id="products">
 			<header>
 				<h1>Products</h1>
-				<p>You searched for <mark th:text="{searchedFor}"></mark></p>
+
 				<p th:text="${products.size()}+' Products"></p>
 				<div id="wrapper-in-prod-header">
 					<button type="button"><img src="images/icon-xmark.svg" width="26" height="26" alt="Close"></button>
@@ -143,7 +143,7 @@
 			</header>
 			<dl class="prod-list">
 				<div th:each="product : ${products}">
-					<dt th:text="${product.name}"><a href="#"></a></dt>
+					<dt th:text="${product.name}"><a th:href="@{/getProductdetails(id=${product.id})}"></a></dt>
 					<dd><a th:href="@{/getProductdetails(id=${product.id})}" role="presentation" tabindex="-1"><img th:attr="src=${product.imagePath}" style="padding: 0 7.143%;"></a></dd>
 					<dd th:text="${#numbers.formatCurrency(product.price)}" class="offer"></dd>
 					<dd class="rating">
